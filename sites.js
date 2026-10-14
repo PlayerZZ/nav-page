@@ -25,7 +25,6 @@ window.START_PAGE = {
     { id: "exch", name: "交易所" },
     { id: "bank", name: "银行" },
     { id: "news", name: "资讯" },
-    { id: "ainews", name: "AI 资讯" },
     { id: "video", name: "视频" },
     { id: "adult", name: "成人" }
   ],
@@ -192,13 +191,12 @@ window.START_PAGE = {
       tags: ["视频"],
       price: "免费"
     },
-    // ---------- AI 资讯 ----------
     {
       name: "Hacker News",
       url: "https://news.ycombinator.com",
-      cat: "ainews",
+      cat: "news",
       desc: "技术和创业社区，AI 相关讨论很多。",
-      tags: ["技术", "社区"],
+      tags: ["AI", "技术", "社区"],
       price: "免费"
     },
     // ---------- 视频 ----------
