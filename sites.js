@@ -102,7 +102,7 @@ window.START_PAGE = {
       price: "需开户"
     },
     {
-      name: "盈透证券 IBKR",
+      name: "盈透证券 IBKR 美国",
       url: "https://www.interactivebrokers.com",
       cat: "exch",
       desc: "券商，可交易全球多个市场的股票、期货、期权等。",
@@ -136,8 +136,8 @@ window.START_PAGE = {
     },
     // ---------- 银行 ----------
     {
-      name: "汇丰 HSBC",
-      url: "https://www.hsbc.com",
+      name: "汇丰 HSBC 香港",
+      url: "https://www.hsbc.com.hk",
       cat: "bank",
       desc: "银行。",
       tags: ["银行"],
