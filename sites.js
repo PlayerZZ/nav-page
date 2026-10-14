@@ -25,8 +25,7 @@ window.START_PAGE = {
     { id: "exch", name: "交易所" },
     { id: "bank", name: "银行" },
     { id: "news", name: "资讯" },
-    { id: "video", name: "视频" },
-    { id: "adult", name: "成人" }
+    { id: "video", name: "视频" }
   ],
 
   sites: [
@@ -216,11 +215,10 @@ window.START_PAGE = {
       tags: ["影视"],
       price: "付费"
     },
-    // ---------- 成人 ----------
     {
       name: "huangguoai",
       url: "https://huangguoai.com",
-      cat: "adult",
+      cat: "video",
       desc: "成人网站。",
       tags: ["成人"],
       price: "免费"
@@ -228,7 +226,7 @@ window.START_PAGE = {
     {
       name: "Pornhub",
       url: "https://www.pornhub.com",
-      cat: "adult",
+      cat: "video",
       desc: "成人网站。",
       tags: ["成人"],
       price: "免费"
@@ -236,7 +234,7 @@ window.START_PAGE = {
     {
       name: "XVideos",
       url: "https://www.xvideos.com",
-      cat: "adult",
+      cat: "video",
       desc: "成人网站。",
       tags: ["成人"],
       price: "免费"
@@ -244,7 +242,7 @@ window.START_PAGE = {
     {
       name: "bad.news",
       url: "https://bad.news",
-      cat: "adult",
+      cat: "video",
       desc: "成人网站。",
       tags: ["成人"],
       price: "免费"
