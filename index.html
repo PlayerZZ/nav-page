@@ -3,601 +3,555 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
 <title>黄页</title>
+<meta name="description" content="赛博牛马的黄页：收藏的好网站，附上自己的解读。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📒</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --yellow: #ffd21f;
-    --ink: #1a1a1a;
-    --bg: #ffffff;
-    --fg: #1a1a1a;
-    --muted: #5c5c5c;
-    --line: #d4d4d4;
-    --chip: #f0f0f0;
-    --card: #fafafa;
-    --head-bg: #1a1a1a;
-    --head-fg: #ffd21f;
-    --font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", system-ui, sans-serif;
+  /* 和 home.cyberniuma.com 同一套终端风格，主色是黄色（黄页）。
+     两套背景：parchment 羊皮纸藏宝图（默认）；dark 暖炭灰。由 <html data-theme> 切换 */
+  :root[data-theme="dark"] {
+    --bg: #14110a;
+    --bg-glow: rgba(255, 214, 10, .07);
+    --grid: rgba(255, 214, 10, .035);
+    --fg: #fff4d1;
+    --accent: #ffd60a;       /* 主色：标题、高亮 */
+    --accent-ink: #000;      /* 主色上的文字 */
+    --note: #ff9f1c;
+    --pink: #ff2e88;
+    --dim: #8a7d55;
+    --card: #1c1810;
+    --card-hover: #262013;
+    --border: #3a3220;
+    --pop: #1f1a10;
+    --glow: 0 0 22px -10px rgba(255, 214, 10, .8);
+    --title-shadow: 0 0 20px rgba(255,214,10,.5), 0 0 2px #fff;
+    --scan: .14;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #141414;
-      --fg: #ececec;
-      --muted: #a6a6a6;
-      --line: #343434;
-      --chip: #242424;
-      --card: #1b1b1b;
-      --head-bg: #ffd21f;
-      --head-fg: #1a1a1a;
-    }
+  /* 羊皮纸藏宝图：深棕墨水 + 锈红标记（古老），悬停时青色全息光（赛博） */
+  :root, :root[data-theme="parchment"] {
+    --bg: #e6cf9c;
+    --bg-glow: rgba(255, 244, 214, .55);
+    --grid: rgba(90, 55, 20, .05);
+    --fg: #3a2512;
+    --accent: #3a2512;
+    --accent-ink: #f1e0b4;
+    --note: #a3361b;
+    --pink: #a3361b;
+    --dim: #86643d;
+    --card: rgba(250, 236, 200, .62);
+    --card-hover: rgba(255, 246, 222, .9);
+    --border: rgba(110, 72, 30, .35);
+    --pop: #f6e6bf;
+    --glow: 0 0 0 1px rgba(0, 170, 160, .55), 0 0 22px -4px rgba(0, 190, 180, .55);
+    --title-shadow: 2px 2px 0 rgba(163, 54, 27, .35);
+    --scan: .025;
   }
-
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-
+  html, body { margin: 0; }
   body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--font);
-    font-size: 15px;
-    line-height: 1.55;
-    -webkit-text-size-adjust: 100%;
+    color: var(--fg); min-height: 100vh; overflow-x: hidden;
+    font-family: "JetBrains Mono", ui-monospace, Menlo, monospace, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background:
+      radial-gradient(900px 500px at 20% -10%, var(--bg-glow), transparent 70%),
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 28px 28px,
+      var(--bg);
+    background-attachment: fixed;
   }
+  /* 扫描线：只在暗色背景下有 */
+  body::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,var(--scan)) 0 1px, transparent 1px 3px);
+  }
+  /* ---------- 羊皮纸专属：斑驳底色 + 纸张纤维 + 烧焦的边缘 ---------- */
+  :root[data-theme="parchment"] body {
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .22  0 0 0 0 .08  0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+      radial-gradient(ellipse 600px 380px at 18% 22%, rgba(255, 246, 220, .55), transparent 70%),
+      radial-gradient(ellipse 520px 420px at 82% 68%, rgba(150, 100, 40, .18), transparent 70%),
+      radial-gradient(ellipse 380px 260px at 60% 12%, rgba(120, 75, 25, .12), transparent 70%),
+      radial-gradient(ellipse 300px 300px at 8% 88%, rgba(120, 75, 25, .16), transparent 70%),
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 28px 28px,
+      var(--bg);
+    background-attachment: fixed;
+  }
+  :root[data-theme="parchment"] body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 49;
+    box-shadow: inset 0 0 140px rgba(90, 45, 5, .55), inset 0 0 36px rgba(60, 28, 0, .45);
+  }
+  .compass { display: none; }
+  :root[data-theme="parchment"] .compass { display: block; width: 92px; height: 92px; color: var(--fg); opacity: .55; flex: none; }
+  .tagline { font-size: 11px; letter-spacing: .18em; color: var(--dim); margin-top: 6px; }
+  /* 有解读的站点：暗色主题是角标，羊皮纸主题是锈红色的“✕”（藏宝标记） */
+  :root[data-theme="parchment"] .tile .has-note, :root[data-theme="parchment"] .legend .tri {
+    border: 0; width: auto; height: auto; line-height: 1;
+  }
+  :root[data-theme="parchment"] .tile .has-note::after, :root[data-theme="parchment"] .legend .tri::after {
+    content: "✕"; color: var(--note); font-size: 11px; font-weight: 800; font-style: normal;
+  }
+  :root[data-theme="parchment"] .tile .has-note { top: 2px; right: 4px; }
+  :root[data-theme="parchment"] .cat-head .name::before { content: "✕ "; color: var(--note); }
+  :root[data-theme="parchment"] .pop { box-shadow: 0 0 0 1px rgba(0,170,160,.4), 0 16px 40px -14px rgba(60,30,0,.6); }
+
+  [hidden] { display: none !important; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 24px 16px 60px; }
   a { color: inherit; }
   button { font: inherit; color: inherit; }
-  :focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
-  .cover :focus-visible { outline-color: var(--ink); }
-  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-  .wrap { max-width: 1440px; margin: 0 auto; padding: 0 16px; }
-  @media (min-width: 720px) { .wrap { padding: 0 28px; } }
+  .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--dim); font-size: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+  .bar b { color: var(--accent); font-weight: 700; }
+  .bar a { text-decoration: none; }
+  .bar a:hover { color: var(--accent); }
+  .theme { background: none; border: 1px solid var(--border); border-radius: 3px; padding: 2px 8px; cursor: pointer; font-size: 11px; color: var(--dim); }
+  .theme:hover { color: var(--accent); border-color: var(--accent); }
 
-  /* ---------- 顶栏：标题和搜索同一行 ---------- */
-  .cover { background: var(--yellow); color: var(--ink); padding: 14px 0; }
-  .cover .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px; }
-  h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    line-height: 1;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-  }
-  .search { flex: 1 1 280px; display: block; }
-  .search input {
-    width: 100%;
-    font: inherit;
-    font-size: 1rem;
-    padding: 9px 12px;
-    background: #fff;
-    color: #1a1a1a;
-    border: 2px solid var(--ink);
-    border-radius: 0;
-    appearance: none;
-  }
-  .search input::placeholder { color: #6b6b6b; }
-  .count { margin: 0; font-size: 0.875rem; font-weight: 600; white-space: nowrap; }
+  /* ---------- 开场（压缩成一行半） ---------- */
+  .head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; margin: 22px 0 16px; }
+  .head .cmd { font-size: 13px; color: var(--dim); }
+  .head .cmd .p { color: var(--accent); }
+  .head h1 { margin: 0; font-size: clamp(40px, 7vw, 64px); line-height: 1; color: var(--accent); text-shadow: var(--title-shadow); }
+  .head .out { font-size: 13px; color: var(--dim); max-width: 420px; }
 
-  /* ---------- 分类导航 ---------- */
-  .index {
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    background: var(--bg);
-    border-bottom: 1px solid var(--line);
+  /* ---------- 搜索 + 筛选 ---------- */
+  .search {
+    display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); background: var(--card);
+    border-radius: 6px; padding: 10px 12px; font-size: 14px;
   }
-  .index ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 4px 18px;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .index a {
-    display: inline-block;
-    padding: 8px 0;
-    text-decoration: none;
-    font-weight: 700;
-    border-bottom: 3px solid transparent;
-  }
-  .index a:hover { border-bottom-color: var(--yellow); }
-  .index .n { color: var(--muted); font-weight: 400; margin-left: 4px; }
+  .search:focus-within { border-color: var(--accent); box-shadow: var(--glow); }
+  .search .p { color: var(--accent); font-weight: 700; white-space: nowrap; }
+  .search input { flex: 1; min-width: 0; background: none; border: 0; outline: none; color: var(--fg); font: inherit; caret-color: var(--accent); }
+  .search input::placeholder { color: var(--dim); }
+  .search .count { color: var(--dim); font-size: 12px; white-space: nowrap; }
+  .search .count b { color: var(--accent); }
+  .kbd { border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; font-size: 11px; color: var(--dim); }
 
-  /* ---------- 筛选 ---------- */
-  .filters { padding: 10px 0 0; display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
-  .chip {
-    cursor: pointer;
-    padding: 1px 10px;
-    background: var(--chip);
-    border: 1px solid transparent;
-    border-radius: 999px;
-    font-size: 0.8125rem;
-    line-height: 1.6;
-  }
-  .chip:hover { border-color: var(--fg); }
-  .chip[aria-pressed="true"] { background: var(--yellow); color: var(--ink); border-color: var(--ink); font-weight: 700; }
-  .link-btn {
-    cursor: pointer;
-    background: none;
-    border: 0;
-    padding: 1px 4px;
-    color: var(--muted);
-    font-size: 0.8125rem;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  .link-btn:hover { color: var(--fg); }
-  .toggle { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8125rem; cursor: pointer; margin-left: 4px; }
-  .toggle input { width: 15px; height: 15px; accent-color: var(--ink); }
+  .filters { margin: 10px 0 4px; display: grid; gap: 8px; }
+  .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; }
+  .row .k { color: var(--dim); width: 3.5em; flex: none; }
+  .chip { background: none; border: 1px solid var(--border); border-radius: 3px; padding: 2px 8px; cursor: pointer; text-decoration: none; font-size: 12px; }
+  .chip .n { color: var(--dim); margin-left: 3px; }
+  .chip:hover { border-color: var(--accent); }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .chip[aria-pressed="true"] .n { color: inherit; opacity: .7; }
+  .chip.ghost { border-style: dashed; color: var(--dim); }
+  .chip.clear { border-color: var(--pink); color: var(--pink); }
 
-  /* ---------- 目录 ---------- */
-  main { padding-bottom: 40px; }
-  .cat { margin-top: 18px; scroll-margin-top: 46px; }
-  .cat-head {
-    margin: 0 0 10px;
-    padding: 3px 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    background: var(--head-bg);
-    color: var(--head-fg);
-    font-size: 1.0625rem;
-    font-weight: 800;
-    line-height: 1.5;
+  /* ---------- 分类 + 小方块 ---------- */
+  .cat { margin-top: 22px; scroll-margin-top: 12px; }
+  .cat-head { display: flex; align-items: baseline; gap: 8px; margin: 0 0 8px; font-size: 12px; font-weight: 400; color: var(--dim); }
+  .cat-head .name { color: var(--accent); font-size: 15px; font-weight: 800; }
+  .cat-head::after { content: ""; flex: 1; border-bottom: 1px dashed var(--border); transform: translateY(-3px); }
+  .grid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  /* 长名字不能把网格撑宽：网格项默认最小宽度是内容宽度，这里允许缩小，名字用省略号 */
+  .grid > * { min-width: 0; }
+  .tile {
+    position: relative; display: flex; align-items: center; gap: 8px; height: 42px; padding: 0 10px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 5px; text-decoration: none;
+    transition: border-color .15s, background .15s, box-shadow .15s;
   }
-  .cat-head .n { font-size: 0.8125rem; font-weight: 600; }
+  .tile:hover, .tile:focus-visible, .tile.active { border-color: var(--accent); background: var(--card-hover); box-shadow: var(--glow); outline: none; }
+  .ico { flex: none; width: 20px; height: 20px; border-radius: 4px; display: grid; place-items: center; overflow: hidden; }
+  .ico img { width: 18px; height: 18px; }
+  .ico-l { font-size: 12px; font-weight: 800; color: var(--accent); }
+  .tile .name { font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+  /* 收费标记：空心 = 免费，实心 = 收费 / 部分收费 */
+  .mark { flex: none; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--accent); }
+  .mark.paid { background: var(--accent); }
+  .tile .has-note { position: absolute; top: 3px; right: 4px; width: 0; height: 0; border-top: 6px solid var(--note); border-left: 6px solid transparent; }
+  .legend { margin-top: 12px; font-size: 11px; color: var(--dim); display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend .tri { width: 0; height: 0; border-top: 6px solid var(--note); border-left: 6px solid transparent; }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-    gap: 8px;
-    align-items: start;
+  /* ---------- 详情：桌面是悬浮提示，手机是底部面板（同一份内容） ---------- */
+  .detail .d-head { display: flex; gap: 10px; align-items: center; }
+  .detail .d-head .ico { width: 30px; height: 30px; border: 1px solid var(--border); }
+  .detail .d-head .ico img { width: 22px; height: 22px; }
+  .detail .d-name { font-weight: 800; font-size: 15px; }
+  .detail .d-host { font-size: 11px; color: var(--dim); }
+  .detail .d-price { margin-left: auto; font-size: 11px; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--accent); color: var(--accent); white-space: nowrap; }
+  .detail .d-price.paid { background: var(--accent); color: var(--accent-ink); }
+  .detail .d-desc { font-size: 13px; line-height: 1.6; margin: 10px 0 0; }
+  .detail .d-note { margin: 10px 0 0; padding: 8px 10px; border-left: 2px solid var(--note); background: color-mix(in srgb, var(--note) 8%, transparent); font-size: 12px; line-height: 1.7; }
+  .detail .d-note::before { content: "# 我的解读 "; color: var(--note); font-weight: 700; }
+  .detail .d-tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 10px; }
+  .detail .d-tags button { background: none; border: 0; padding: 0; cursor: pointer; font-size: 12px; color: var(--dim); }
+  .detail .d-tags button:hover { color: var(--accent); }
+
+  .pop {
+    position: fixed; z-index: 40; width: 320px; padding: 14px; border-radius: 6px;
+    background: var(--pop); border: 1px solid var(--accent); box-shadow: 0 12px 40px -12px rgba(0,0,0,.6);
+    opacity: 0; transform: translateY(4px); transition: opacity .12s, transform .12s; pointer-events: none;
+  }
+  .pop.show { opacity: 1; transform: none; pointer-events: auto; }
+
+  .sheet-bg { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,.5); opacity: 0; transition: opacity .2s; }
+  .sheet {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 61; max-height: 80vh; overflow-y: auto;
+    background: var(--pop); border-top: 2px solid var(--accent); border-radius: 12px 12px 0 0; padding: 10px 18px 22px;
+    transform: translateY(100%); transition: transform .22s ease-out;
+  }
+  .sheet .grip { width: 40px; height: 4px; border-radius: 2px; background: var(--border); margin: 0 auto 12px; }
+  .sheet.show { transform: none; }
+  .sheet-bg.show { opacity: 1; }
+  .sheet .go {
+    display: block; margin-top: 16px; text-align: center; text-decoration: none; padding: 12px; border-radius: 6px;
+    background: var(--accent); color: var(--accent-ink); font-weight: 800;
   }
 
-  /* ---------- 卡片 ---------- */
-  .card {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    align-items: center;
-    background: var(--card);
-    border: 1px solid var(--line);
-  }
-  .card:hover, .card:focus-within { border-color: var(--fg); }
-  .card.open { border-color: var(--fg); }
+  .empty { margin-top: 30px; color: var(--dim); font-size: 14px; line-height: 2; }
+  .empty b { color: var(--pink); font-weight: 400; }
+  footer { margin-top: 36px; color: var(--dim); font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; border-top: 1px solid var(--border); padding-top: 12px; }
 
-  .main {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    min-width: 0;
-    padding: 9px 4px 9px 10px;
-    text-decoration: none;
+  @media (max-width: 600px) {
+    :root[data-theme="parchment"] .compass { width: 60px; height: 60px; }
+    .search .count, .kbd { display: none; }
+    .row .k { width: 100%; }
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .head .out { display: none; }
   }
-  .ico {
-    flex: none;
-    width: 34px;
-    height: 34px;
-    display: grid;
-    place-items: center;
-    background: var(--chip);
-    overflow: hidden;
-  }
-  .ico img { width: 26px; height: 26px; display: block; }
-  .ico-l { font-size: 0.95rem; font-weight: 800; color: var(--muted); }
-  .txt { min-width: 0; line-height: 1.3; }
-  .name {
-    display: block;
-    font-weight: 800;
-    font-size: 1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .main:hover .name { background: var(--yellow); color: var(--ink); }
-  .desc {
-    display: block;
-    margin-top: 2px;
-    font-size: 0.8125rem;
-    color: var(--muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .price {
-    font-size: 0.6875rem;
-    line-height: 1.4;
-    padding: 0 5px;
-    border: 1px solid currentColor;
-    color: var(--muted);
-    white-space: nowrap;
-  }
-  .price.paid { background: var(--yellow); color: var(--ink); border-color: var(--ink); font-weight: 700; }
-  .more {
-    cursor: pointer;
-    width: 32px;
-    height: 32px;
-    margin: 0 2px 0 4px;
-    background: none;
-    border: 0;
-    color: var(--muted);
-    font-size: 0.8125rem;
-  }
-  .more:hover { color: var(--fg); background: var(--chip); }
-  .more::before { content: "▾"; display: inline-block; transition: transform 0.12s; }
-  .card.open .more::before { transform: rotate(180deg); }
-  @media (prefers-reduced-motion: reduce) { .more::before { transition: none; } }
-
-  .detail {
-    grid-column: 1 / -1;
-    padding: 8px 12px 10px;
-    border-top: 1px dotted var(--line);
-    font-size: 0.875rem;
-  }
-  .detail .host { color: var(--muted); font-size: 0.8125rem; overflow-wrap: anywhere; }
-  .detail .full { margin: 4px 0 0; }
-  .detail .note {
-    margin: 6px 0 0;
-    padding-left: 10px;
-    border-left: 4px solid var(--yellow);
-    color: var(--muted);
-  }
-  .detail .note b { color: var(--fg); margin-right: 6px; }
-  .tags { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 2px 12px; }
-  .tag {
-    cursor: pointer;
-    background: none;
-    border: 0;
-    padding: 0;
-    font-size: 0.8125rem;
-    color: var(--muted);
-    text-decoration: underline;
-    text-decoration-color: var(--line);
-    text-underline-offset: 3px;
-  }
-  .tag:hover { color: var(--fg); text-decoration-color: var(--yellow); text-decoration-thickness: 2px; }
-  .tag[aria-pressed="true"] { color: var(--fg); font-weight: 700; text-decoration-color: var(--yellow); text-decoration-thickness: 2px; }
-
-  .empty { margin: 36px 0; padding: 20px; border: 2px dashed var(--line); }
-  .empty p { margin: 0 0 6px; }
-
-  footer { border-top: 1px solid var(--line); padding: 12px 0 28px; color: var(--muted); font-size: 0.8125rem; }
-  footer p { margin: 0; }
-  kbd {
-    font: inherit;
-    font-size: 0.75rem;
-    padding: 0 5px;
-    border: 1px solid var(--line);
-    background: var(--chip);
-  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
-
-<header class="cover">
-  <div class="wrap">
-    <h1 id="title">黄页</h1>
-    <label class="search">
-      <span class="sr">搜索站点</span>
-      <input id="q" type="search" placeholder="搜名称、用途、解读或标签，按 / 直接输入" autocomplete="off" spellcheck="false">
-    </label>
-    <p class="count" id="count" aria-live="polite"></p>
-  </div>
-</header>
-
-<nav class="index" aria-label="分类">
-  <div class="wrap"><ul id="index"></ul></div>
-</nav>
-
 <div class="wrap">
-  <section class="filters" aria-label="筛选">
-    <div id="tag-row" style="display:contents"></div>
-    <label class="toggle"><input type="checkbox" id="free"> 只看免费</label>
-    <button class="link-btn" id="more-tags" type="button"></button>
-    <button class="link-btn" id="clear" type="button" hidden>清除筛选</button>
-  </section>
+  <div class="bar">
+    <span><a href="https://home.cyberniuma.com">← home</a> · cyberniuma@nav:~</span>
+    <span><b id="siteCount">0</b> sites · <b id="catCount">0</b> dirs · <button class="theme" id="themeBtn" type="button"></button></span>
+  </div>
+
+  <header class="head">
+    <div style="display:flex;gap:16px;align-items:center">
+      <!-- 罗盘：只在羊皮纸主题下显示 -->
+      <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width=".6" stroke-dasharray="2 3"/>
+        <path d="M50 6 L57 50 L50 94 L43 50 Z" fill="currentColor" opacity=".85"/>
+        <path d="M6 50 L50 43 L94 50 L50 57 Z" fill="currentColor" opacity=".45"/>
+        <path d="M50 6 L57 50 L50 50 Z" fill="#a3361b"/>
+        <circle cx="50" cy="50" r="3" fill="#f1e0b4" stroke="currentColor"/>
+        <text x="50" y="4.5" font-size="7" text-anchor="middle" fill="currentColor" font-family="serif">N</text>
+      </svg>
+      <div>
+        <div class="cmd"><span class="p">$</span> cat yellow_pages.txt</div>
+        <h1 id="title">黄页</h1>
+        <div class="tagline">// TREASURE MAP OF THE INTERNET</div>
+      </div>
+    </div>
+    <div class="out">收藏的好网站，附上自己的解读。悬停（手机上点一下）查看详情。</div>
+  </header>
+
+  <label class="search">
+    <span class="p">$ grep -i</span>
+    <input id="q" type="search" placeholder="名称、用途、解读或标签" autocomplete="off" spellcheck="false" aria-label="搜索站点">
+    <span class="count" id="count"></span>
+    <span class="kbd" aria-hidden="true">/</span>
+  </label>
+
+  <div class="filters">
+    <div class="row" id="dirRow"><span class="k">cd</span></div>
+    <div class="row" id="tagRow"><span class="k">tags</span></div>
+  </div>
 
   <main id="directory"></main>
 
-  <footer>
-    <p>点卡片打开网站，点右侧 ▾ 展开解读，鼠标悬停也能看到简介和解读。加站点：打开 <kbd>sites.js</kbd>，照着已有格式加一条。<kbd>/</kbd> 搜索，<kbd>Enter</kbd> 打开第一个结果，<kbd>Esc</kbd> 清空。</p>
-  </footer>
+  <div class="legend">
+    <span><i class="mark"></i>免费</span>
+    <span><i class="mark paid"></i>收费 / 部分收费</span>
+    <span><i class="tri"></i>有我的解读</span>
+  </div>
+
+  <footer><span>© 赛博牛马 · 按 / 搜索，回车打开第一个结果，Esc 清空</span><span>built with AI</span></footer>
 </div>
+
+<!-- 桌面：悬浮提示；手机：底部面板 -->
+<div class="pop detail" id="pop" role="tooltip"></div>
+<div class="sheet-bg" id="sheetBg" hidden></div>
+<div class="sheet detail" id="sheet" role="dialog" aria-modal="true" aria-label="站点详情" hidden></div>
 
 <script src="sites.js"></script>
 <script>
-(function () {
+(() => {
   "use strict";
+  const data = window.START_PAGE;
+  const $ = (id) => document.getElementById(id);
+  const main = $("directory");
 
-  var data = window.START_PAGE;
-  var main = document.getElementById("directory");
+  /* ---------- 主题：羊皮纸（默认）/ 暖炭灰，记在浏览器里 ---------- */
+  const THEMES = { parchment: "羊皮纸", dark: "暖炭灰" };
+  const setTheme = (t) => {
+    document.documentElement.dataset.theme = t;
+    $("themeBtn").textContent = "theme: " + THEMES[t];
+    try { localStorage.setItem("nav-theme", t); } catch (e) {}
+  };
+  let theme = new URLSearchParams(location.search).get("theme");
+  if (!THEMES[theme]) { try { theme = localStorage.getItem("nav-theme"); } catch (e) {} }
+  setTheme(THEMES[theme] ? theme : "parchment");
+  $("themeBtn").addEventListener("click", () => setTheme(document.documentElement.dataset.theme === "dark" ? "parchment" : "dark"));
 
   if (!data || !Array.isArray(data.sites)) {
-    var err = document.createElement("div");
-    err.className = "empty";
-    err.innerHTML = "<p><b>没有读到站点数据。</b></p><p>请确认 sites.js 和 index.html 在同一个文件夹，并且 sites.js 里的内容没有语法错误。</p>";
-    main.appendChild(err);
+    main.innerHTML = '<div class="empty"><b>cat: sites.js: 没有读到站点数据</b><br>请确认 sites.js 和 index.html 在同一个文件夹，并且 sites.js 没有语法错误。</div>';
     return;
   }
-
-  var $ = function (id) { return document.getElementById(id); };
-  var qInput = $("q"), countEl = $("count"), indexEl = $("index"), tagRow = $("tag-row");
-  var freeBox = $("free"), moreBtn = $("more-tags"), clearBtn = $("clear");
-
   document.title = data.title || "黄页";
   $("title").textContent = data.title || "黄页";
-  var newTab = data.openInNewTab !== false;
-  var useFallbackIcon = data.iconFallback !== false;
+  const newTab = data.openInNewTab !== false;
+  const useFallbackIcon = data.iconFallback !== false;
 
   /* ---------- 数据整理 ---------- */
-  var cats = (data.categories || []).slice();
-  var known = {};
-  cats.forEach(function (c) { known[c.id] = true; });
-
-  function parseUrl(u) {
-    try {
-      var x = new URL(u);
-      return (x.protocol === "http:" || x.protocol === "https:") ? x : null;
-    } catch (e) { return null; }
-  }
-
-  var sites = data.sites.filter(function (s) { return s && s.name && s.url; }).map(function (s) {
-    var u = parseUrl(s.url);
-    var tags = Array.isArray(s.tags) ? s.tags : [];
+  const cats = (data.categories || []).slice();
+  const known = new Set(cats.map((c) => c.id));
+  const parseUrl = (u) => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x : null; } catch (e) { return null; } };
+  const sites = data.sites.filter((s) => s && s.name && s.url).map((s) => {
+    const u = parseUrl(s.url);
+    const tags = Array.isArray(s.tags) ? s.tags.map(String) : [];
     return {
-      name: String(s.name),
-      url: u ? u.href : "",
-      origin: u ? u.origin : "",
+      name: String(s.name), url: u ? u.href : "", origin: u ? u.origin : "",
       host: u ? u.hostname.replace(/^www\./, "") : String(s.url),
-      catId: known[s.cat] ? s.cat : "_other",
-      desc: s.desc || "",
-      note: s.note || "",
-      tags: tags.map(String),
-      price: s.price || "",
-      icon: s.icon || "",
-      hay: [s.name, s.url, s.desc, s.note, tags.join(" "), s.price].join(" ").toLowerCase()
+      catId: known.has(s.cat) ? s.cat : "_other",
+      desc: s.desc || "", note: s.note || "", tags, price: s.price || "", icon: s.icon || "",
+      hay: [s.name, s.url, s.desc, s.note, tags.join(" "), s.price].join(" ").toLowerCase(),
     };
   });
-  if (sites.some(function (s) { return s.catId === "_other"; })) cats.push({ id: "_other", name: "未分类" });
+  if (sites.some((s) => s.catId === "_other")) cats.push({ id: "_other", name: "未分类" });
+  const tagCount = {};
+  sites.forEach((s) => s.tags.forEach((t) => (tagCount[t] = (tagCount[t] || 0) + 1)));
+  const allTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a] || a.localeCompare(b, "zh"));
+  $("siteCount").textContent = sites.length;
+  $("catCount").textContent = cats.length;
 
-  var tagCount = {};
-  sites.forEach(function (s) { s.tags.forEach(function (t) { tagCount[t] = (tagCount[t] || 0) + 1; }); });
-  var allTags = Object.keys(tagCount).sort(function (a, b) {
-    return tagCount[b] - tagCount[a] || a.localeCompare(b, "zh");
-  });
-
-  var state = { q: "", tags: [], free: false, showAllTags: false };
-  var openSet = {};
+  const state = { q: "", tags: [], free: false, showAllTags: false };
+  const matches = (s) => {
+    if (state.free && s.price !== "免费") return false;
+    if (!state.tags.every((t) => s.tags.includes(t))) return false;
+    return state.q.toLowerCase().split(/\s+/).filter(Boolean).every((w) => s.hay.includes(w));
+  };
+  const toggleTag = (t) => {
+    const i = state.tags.indexOf(t);
+    i >= 0 ? state.tags.splice(i, 1) : state.tags.push(t);
+    hidePop(); closeSheet();
+    render();
+  };
 
   /* ---------- 小工具 ---------- */
-  function el(tag, cls, text) {
-    var n = document.createElement(tag);
+  const el = (tag, cls, text) => {
+    const n = document.createElement(tag);
     if (cls) n.className = cls;
     if (text != null) n.textContent = text;
     return n;
-  }
+  };
+  const chip = (label, n, pressed, onClick, extra = "") => {
+    const b = el("button", "chip " + extra, label);
+    b.type = "button";
+    if (n != null) b.appendChild(el("span", "n", String(n)));
+    if (pressed != null) b.setAttribute("aria-pressed", String(pressed));
+    b.addEventListener("click", onClick);
+    return b;
+  };
 
-  function matches(s) {
-    if (state.free && s.price !== "免费") return false;
-    for (var i = 0; i < state.tags.length; i++) {
-      if (s.tags.indexOf(state.tags[i]) < 0) return false;
-    }
-    var terms = state.q.toLowerCase().split(/\s+/).filter(Boolean);
-    for (var j = 0; j < terms.length; j++) {
-      if (s.hay.indexOf(terms[j]) < 0) return false;
-    }
-    return true;
-  }
-
-  function toggleTag(t) {
-    var i = state.tags.indexOf(t);
-    if (i >= 0) state.tags.splice(i, 1); else state.tags.push(t);
-    render(t);
-  }
-
-  /* 图标：自己指定的 -> 网站自带 favicon -> 备用服务 -> 首字 */
-  var okIcons = {};
-  function iconSources(s) {
-    var list = [];
-    if (s.icon) list.push(s.icon);
-    else {
-      if (s.origin) list.push(s.origin + "/favicon.ico");
-      if (useFallbackIcon && s.host) list.push("https://icons.duckduckgo.com/ip3/" + s.host + ".ico");
-    }
-    return list;
-  }
-
-  function iconNode(s) {
-    var wrap = el("span", "ico");
+  /* 图标：自己指定的 -> 网站自带 favicon -> 备用服务 -> 首字。成功的地址记下来，详情里直接用 */
+  const badIcons = new Set(), goodIcon = new Map();
+  const iconNode = (s) => {
+    const wrap = el("span", "ico");
     wrap.setAttribute("aria-hidden", "true");
-    var letter = el("span", "ico-l", Array.from(s.name)[0] || "?");
+    const letter = el("span", "ico-l", Array.from(s.name)[0] || "?");
     wrap.appendChild(letter);
-    var sources = iconSources(s);
-
-    function tryAt(i) {
+    const sources = s.icon ? [s.icon] : [s.origin && s.origin + "/favicon.ico", useFallbackIcon && s.host && `https://icons.duckduckgo.com/ip3/${s.host}.ico`].filter(Boolean);
+    const tryAt = (i) => {
       if (i >= sources.length) return;
-      var src = sources[i];
-      if (okIcons[src] === false) { tryAt(i + 1); return; }
-      var img = new Image();
-      img.alt = "";
-      img.width = 26;
-      img.height = 26;
-      img.referrerPolicy = "no-referrer";
-      img.onload = function () {
-        if (img.naturalWidth < 2) { okIcons[src] = false; tryAt(i + 1); return; }
-        okIcons[src] = true;
+      if (badIcons.has(sources[i])) return tryAt(i + 1);
+      const img = new Image();
+      img.alt = ""; img.referrerPolicy = "no-referrer";
+      img.onload = () => {
+        if (img.naturalWidth < 2) { badIcons.add(sources[i]); return tryAt(i + 1); }
+        goodIcon.set(s, sources[i]);
         if (letter.parentNode === wrap) wrap.replaceChild(img, letter);
       };
-      img.onerror = function () { okIcons[src] = false; tryAt(i + 1); };
-      img.src = src;
-    }
+      img.onerror = () => { badIcons.add(sources[i]); tryAt(i + 1); };
+      img.src = sources[i];
+    };
+    if (goodIcon.has(s)) { sources.unshift(goodIcon.get(s)); }
     tryAt(0);
     return wrap;
-  }
+  };
 
-  function cardNode(s) {
-    var key = s.url || s.name;
-    var card = el("article", "card");
-    var isOpen = !!openSet[key];
-    if (isOpen) card.classList.add("open");
-
-    var a = el("a", "main");
-    if (s.url) {
-      a.href = s.url;
-      if (newTab) { a.target = "_blank"; a.rel = "noopener"; }
-    }
-    a.title = [s.name, s.desc, s.note].filter(Boolean).join("\n");
-    a.appendChild(iconNode(s));
-    var txt = el("span", "txt");
-    txt.appendChild(el("span", "name", s.name));
-    if (s.desc) txt.appendChild(el("span", "desc", s.desc));
-    a.appendChild(txt);
-    card.appendChild(a);
-
-    card.appendChild(s.price ? el("span", s.price === "免费" ? "price" : "price paid", s.price) : el("span"));
-
-    var hasDetail = !!(s.note || s.tags.length || s.desc);
-    var more = el("button", "more");
-    more.type = "button";
-    more.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    more.setAttribute("aria-label", "展开 " + s.name + " 的解读");
-    if (!hasDetail) more.hidden = true;
-    card.appendChild(more);
-
-    var detail = el("div", "detail");
-    detail.hidden = !isOpen;
-    detail.appendChild(el("div", "host", s.host));
-    if (s.desc) detail.appendChild(el("p", "full", s.desc));
-    if (s.note) {
-      var note = el("p", "note");
-      note.appendChild(el("b", null, "解读"));
-      note.appendChild(document.createTextNode(s.note));
-      detail.appendChild(note);
-    }
+  /* ---------- 详情内容（悬浮提示和底部面板共用） ---------- */
+  const fillDetail = (box, s) => {
+    box.textContent = "";
+    const head = el("div", "d-head");
+    head.appendChild(iconNode(s));
+    const t = el("div");
+    t.appendChild(el("div", "d-name", s.name));
+    t.appendChild(el("div", "d-host", s.host));
+    head.appendChild(t);
+    if (s.price) head.appendChild(el("span", s.price === "免费" ? "d-price" : "d-price paid", s.price));
+    box.appendChild(head);
+    if (s.desc) box.appendChild(el("p", "d-desc", s.desc));
+    if (s.note) box.appendChild(el("p", "d-note", s.note));
     if (s.tags.length) {
-      var ul = el("ul", "tags");
-      s.tags.forEach(function (t) {
-        var li = el("li");
-        var b = el("button", "tag", t);
+      const tags = el("div", "d-tags");
+      s.tags.forEach((tag) => {
+        const b = el("button", null, "#" + tag);
         b.type = "button";
-        b.setAttribute("aria-pressed", state.tags.indexOf(t) >= 0 ? "true" : "false");
-        b.addEventListener("click", function () { toggleTag(t); });
-        li.appendChild(b);
-        ul.appendChild(li);
+        b.addEventListener("click", () => toggleTag(tag));
+        tags.appendChild(b);
       });
-      detail.appendChild(ul);
+      box.appendChild(tags);
     }
-    card.appendChild(detail);
+  };
 
-    more.addEventListener("click", function () {
-      var nowOpen = detail.hidden;
-      detail.hidden = !nowOpen;
-      card.classList.toggle("open", nowOpen);
-      more.setAttribute("aria-expanded", nowOpen ? "true" : "false");
-      if (nowOpen) openSet[key] = true; else delete openSet[key];
-    });
-    return card;
+  /* 桌面：悬停 / 键盘聚焦 120ms 后显示，移到提示框上不消失 */
+  const pop = $("pop");
+  let popFor = null, showTimer, hideTimer;
+  const canHover = () => matchMedia("(hover: hover) and (pointer: fine)").matches;
+  function showPop(tile, s) {
+    clearTimeout(hideTimer);
+    clearTimeout(showTimer);
+    showTimer = setTimeout(() => {
+      if (popFor !== s) fillDetail(pop, s);
+      popFor = s;
+      document.querySelectorAll(".tile.active").forEach((n) => n.classList.remove("active"));
+      tile.classList.add("active");
+      // 默认放在方块下方，下面放不下就放上方；水平方向不超出窗口
+      const r = tile.getBoundingClientRect(), pw = pop.offsetWidth, ph = pop.offsetHeight, gap = 8;
+      const left = Math.min(Math.max(8, r.left), innerWidth - pw - 8);
+      const top = r.bottom + gap + ph < innerHeight ? r.bottom + gap : Math.max(8, r.top - gap - ph);
+      pop.style.left = left + "px";
+      pop.style.top = top + "px";
+      pop.classList.add("show");
+    }, popFor ? 40 : 120);
   }
+  function hidePop() {
+    clearTimeout(showTimer);
+    hideTimer = setTimeout(() => {
+      pop.classList.remove("show");
+      document.querySelectorAll(".tile.active").forEach((n) => n.classList.remove("active"));
+      popFor = null;
+    }, 100);
+  }
+  pop.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+  pop.addEventListener("mouseleave", hidePop);
+  addEventListener("scroll", () => { if (pop.classList.contains("show")) hidePop(); }, { passive: true });
+
+  /* 手机（没有悬停）：点一下打开底部面板，面板里再点“打开网站” */
+  const sheet = $("sheet"), sheetBg = $("sheetBg");
+  function openSheet(s) {
+    fillDetail(sheet, s);
+    sheet.prepend(el("div", "grip"));
+    if (s.url) {
+      const go = el("a", "go", "打开网站 →");
+      go.href = s.url;
+      if (newTab) { go.target = "_blank"; go.rel = "noopener"; }
+      sheet.appendChild(go);
+    }
+    sheet.hidden = sheetBg.hidden = false;
+    requestAnimationFrame(() => { sheet.classList.add("show"); sheetBg.classList.add("show"); });
+  }
+  function closeSheet() {
+    if (sheet.hidden) return;
+    sheet.classList.remove("show"); sheetBg.classList.remove("show");
+    setTimeout(() => { sheet.hidden = sheetBg.hidden = true; }, 220);
+  }
+  sheetBg.addEventListener("click", closeSheet);
+  // 面板往下拖超过 80px 就关闭
+  let dragY = null;
+  sheet.addEventListener("touchstart", (e) => { if (sheet.scrollTop === 0) dragY = e.touches[0].clientY; }, { passive: true });
+  sheet.addEventListener("touchmove", (e) => { if (dragY != null && e.touches[0].clientY - dragY > 80) { dragY = null; closeSheet(); } }, { passive: true });
+
+  /* ---------- 小方块 ---------- */
+  const tileNode = (s) => {
+    const a = el("a", "tile");
+    if (s.url) { a.href = s.url; if (newTab) { a.target = "_blank"; a.rel = "noopener"; } }
+    a.setAttribute("aria-label", [s.name, s.price, s.desc].filter(Boolean).join("，"));
+    a.appendChild(iconNode(s));
+    a.appendChild(el("span", "name", s.name));
+    if (s.price) a.appendChild(el("i", s.price === "免费" ? "mark" : "mark paid"));
+    if (s.note) a.appendChild(el("i", "has-note"));
+    a.addEventListener("mouseenter", () => canHover() && showPop(a, s));
+    a.addEventListener("mouseleave", () => canHover() && hidePop());
+    a.addEventListener("focus", () => canHover() && showPop(a, s));
+    a.addEventListener("blur", () => canHover() && hidePop());
+    a.addEventListener("click", (e) => { if (!canHover()) { e.preventDefault(); openSheet(s); } });
+    return a;
+  };
 
   /* ---------- 渲染 ---------- */
-  var firstVisible = null;
+  let firstVisible = null;
+  function render() {
+    const visible = sites.filter(matches);
+    firstVisible = visible[0] || null;
+    const filtering = state.q.trim() !== "" || state.tags.length > 0 || state.free;
+    $("count").innerHTML = filtering ? `→ <b>${visible.length}</b> / ${sites.length}` : `${sites.length} sites`;
 
-  function render(focusTag) {
-    var visible = sites.filter(matches);
-    firstVisible = visible.length ? visible[0] : null;
-    var filtering = state.q.trim() !== "" || state.tags.length > 0 || state.free;
-
-    countEl.textContent = filtering
-      ? "找到 " + visible.length + " / " + sites.length
-      : "共 " + sites.length + " 个站点";
-    clearBtn.hidden = !filtering;
-
-    tagRow.textContent = "";
-    var shown = allTags.filter(function (t) {
-      return state.showAllTags || tagCount[t] >= 2 || state.tags.indexOf(t) >= 0;
-    });
-    shown.forEach(function (t) {
-      var b = el("button", "chip", t + " " + tagCount[t]);
-      b.type = "button";
-      b.dataset.tag = t;
-      b.setAttribute("aria-pressed", state.tags.indexOf(t) >= 0 ? "true" : "false");
-      b.addEventListener("click", function () { toggleTag(t); });
-      tagRow.appendChild(b);
-    });
-    moreBtn.hidden = allTags.length === shown.length && !state.showAllTags;
-    moreBtn.textContent = state.showAllTags ? "收起标签" : "全部标签";
-
-    indexEl.textContent = "";
-    main.textContent = "";
-
-    cats.forEach(function (c) {
-      var list = visible.filter(function (s) { return s.catId === c.id; });
-      if (!list.length) return;
-
-      var li = el("li");
-      var link = el("a", null, c.name);
+    const dirRow = $("dirRow");
+    dirRow.querySelectorAll(".chip").forEach((n) => n.remove());
+    cats.forEach((c) => {
+      const n = visible.filter((s) => s.catId === c.id).length;
+      if (!n) return;
+      const link = el("a", "chip", c.name + "/");
       link.href = "#cat-" + c.id;
-      link.appendChild(el("span", "n", String(list.length)));
-      li.appendChild(link);
-      indexEl.appendChild(li);
+      link.appendChild(el("span", "n", String(n)));
+      dirRow.appendChild(link);
+    });
 
-      var sec = el("section", "cat");
+    const tagRow = $("tagRow");
+    tagRow.querySelectorAll(".chip").forEach((n) => n.remove());
+    tagRow.appendChild(chip("--free", null, state.free, () => { state.free = !state.free; render(); }));
+    allTags
+      .filter((t) => state.showAllTags || tagCount[t] >= 2 || state.tags.includes(t))
+      .forEach((t) => tagRow.appendChild(chip("#" + t, tagCount[t], state.tags.includes(t), () => toggleTag(t))));
+    if (allTags.some((t) => tagCount[t] < 2) || state.showAllTags) {
+      tagRow.appendChild(chip(state.showAllTags ? "收起" : "--all", null, null, () => { state.showAllTags = !state.showAllTags; render(); }, "ghost"));
+    }
+    if (filtering) {
+      tagRow.appendChild(chip("clear", null, null, () => {
+        Object.assign(state, { q: "", tags: [], free: false });
+        $("q").value = "";
+        render();
+        $("q").focus();
+      }, "clear"));
+    }
+
+    main.textContent = "";
+    cats.forEach((c) => {
+      const list = visible.filter((s) => s.catId === c.id);
+      if (!list.length) return;
+      const sec = el("section", "cat");
       sec.id = "cat-" + c.id;
-      var h = el("h2", "cat-head");
-      h.appendChild(el("span", null, c.name));
-      h.appendChild(el("span", "n", list.length + " 个"));
+      const h = el("h2", "cat-head");
+      h.appendChild(el("span", null, "~/"));
+      h.appendChild(el("span", "name", c.name));
+      h.appendChild(el("span", null, String(list.length)));
       sec.appendChild(h);
-      var grid = el("div", "grid");
-      list.forEach(function (s) { grid.appendChild(cardNode(s)); });
+      const grid = el("div", "grid");
+      list.forEach((s) => grid.appendChild(tileNode(s)));
       sec.appendChild(grid);
       main.appendChild(sec);
     });
-
-    if (!visible.length) {
-      var empty = el("div", "empty");
-      empty.appendChild(el("p", null, "没有匹配的站点。"));
-      empty.appendChild(el("p", null, "换个关键词，或者清除筛选再试。"));
-      main.appendChild(empty);
-    }
-
-    if (focusTag) {
-      var btn = tagRow.querySelector('[data-tag="' + focusTag.replace(/"/g, '\\"') + '"]');
-      if (btn) btn.focus();
-    }
+    if (!visible.length) main.innerHTML = `<div class="empty"><b>grep: 没有匹配的站点</b><br>换个关键词，或者点上面的 clear 清除筛选。</div>`;
   }
 
-  /* ---------- 事件 ---------- */
-  qInput.addEventListener("input", function () { state.q = qInput.value; render(); });
-
-  qInput.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" && firstVisible && firstVisible.url) {
+  /* ---------- 键盘 ---------- */
+  const q = $("q");
+  q.addEventListener("input", () => { state.q = q.value; render(); });
+  q.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && firstVisible?.url) {
       e.preventDefault();
-      if (newTab) window.open(firstVisible.url, "_blank", "noopener");
-      else window.location.href = firstVisible.url;
+      newTab ? window.open(firstVisible.url, "_blank", "noopener") : (location.href = firstVisible.url);
     } else if (e.key === "Escape") {
-      if (qInput.value) { qInput.value = ""; state.q = ""; render(); }
-      else qInput.blur();
+      if (q.value) { q.value = ""; state.q = ""; render(); } else q.blur();
     }
   });
-
-  freeBox.addEventListener("change", function () { state.free = freeBox.checked; render(); });
-  moreBtn.addEventListener("click", function () { state.showAllTags = !state.showAllTags; render(); });
-  clearBtn.addEventListener("click", function () {
-    state.q = ""; state.tags = []; state.free = false;
-    qInput.value = ""; freeBox.checked = false;
-    render();
-    qInput.focus();
-  });
-
-  document.addEventListener("keydown", function (e) {
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { hidePop(); closeSheet(); }
     if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey) return;
-    var t = e.target;
+    const t = e.target;
     if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
     e.preventDefault();
-    qInput.focus();
-    qInput.select();
+    q.focus();
+    q.select();
   });
 
   render();

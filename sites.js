@@ -21,6 +21,7 @@ window.START_PAGE = {
   iconFallback: true,
 
   categories: [
+    { id: "ai", name: "AI" },
     { id: "fin", name: "金融" },
     { id: "exch", name: "交易所" },
     { id: "bank", name: "银行" },
@@ -29,6 +30,70 @@ window.START_PAGE = {
   ],
 
   sites: [
+    // ---------- AI ----------
+    {
+      name: "Claude",
+      url: "https://claude.ai",
+      cat: "ai",
+      desc: "Anthropic 的 AI 助手，擅长写作、编程和长文档分析。",
+      note: "写代码、改文章、读长 PDF 都很强，回答风格克制。国内访问需要科学上网，注册需要海外手机号。",
+      tags: ["AI", "编程", "写作"],
+      price: "部分免费"
+    },
+    {
+      name: "ChatGPT",
+      url: "https://chatgpt.com",
+      cat: "ai",
+      desc: "OpenAI 的 AI 助手，功能最全面的通用聊天机器人。",
+      note: "生态最完整：画图、语音、联网搜索、自定义 GPTs 都有。国内访问需要科学上网。",
+      tags: ["AI", "画图", "语音"],
+      price: "部分免费"
+    },
+    {
+      name: "Gemini",
+      url: "https://gemini.google.com",
+      cat: "ai",
+      desc: "Google 的 AI 助手，和 Gmail、文档、YouTube 等 Google 服务打通。",
+      note: "上下文窗口很长，适合一次丢进大量资料；和 Google 全家桶配合最顺。国内访问需要科学上网。",
+      tags: ["AI", "长文档"],
+      price: "部分免费"
+    },
+    {
+      name: "Grok",
+      url: "https://grok.com",
+      cat: "ai",
+      desc: "xAI 的 AI 助手，能实时读取 X（推特）上的内容。",
+      note: "想知道“现在大家在聊什么”时比较有用，回答风格比较随性。国内访问需要科学上网。",
+      tags: ["AI", "实时资讯"],
+      price: "部分免费"
+    },
+    {
+      name: "豆包",
+      url: "https://www.doubao.com",
+      cat: "ai",
+      desc: "字节跳动的 AI 助手，国内用户最多的 AI 应用之一。",
+      note: "国内直接访问，免费额度足，日常问答、写作、搜索都够用；手机 App 的语音通话很好用。",
+      tags: ["AI", "国内可用"],
+      price: "免费"
+    },
+    {
+      name: "千问",
+      url: "https://www.qianwen.com",
+      cat: "ai",
+      desc: "阿里巴巴的 AI 助手（原通义千问），背后是开源的 Qwen 模型。",
+      note: "国内直接访问，免费。读长文档、总结网页比较方便；Qwen 模型本身也开源，可以自己部署。",
+      tags: ["AI", "国内可用", "开源"],
+      price: "免费"
+    },
+    {
+      name: "DeepSeek",
+      url: "https://chat.deepseek.com",
+      cat: "ai",
+      desc: "深度求索的 AI 助手，推理和编程能力强，模型开源。",
+      note: "国内直接访问，免费。打开“深度思考”能看到推理过程，适合数学和逻辑题；高峰期偶尔会提示服务繁忙。",
+      tags: ["AI", "国内可用", "开源", "编程"],
+      price: "免费"
+    },
     // ---------- 金融 ----------
     {
       name: "Visual Capitalist",
